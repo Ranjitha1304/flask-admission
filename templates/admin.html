@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <h1>Admin Dashboard</h1>
+    <a href="{{ url_for('admin_logout') }}" class="admin-btn">Logout</a>
+</header>
+    <div class="card wide">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.course }}</td>
+                    <td>
+                        <span class="status {{ student.status|lower }}">{{ student.status }}</span>
+                    </td>
+                    <td>
+                        {% if student.status == "Pending" %}
+                            <a href="{{ url_for('approve', id=student.id) }}" class="btn approve">Approve</a>
+                            <a href="{{ url_for('reject', id=student.id) }}" class="btn reject">Reject</a>
+                        {% else %}
+                            <span>-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

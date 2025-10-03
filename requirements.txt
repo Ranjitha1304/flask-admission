@@ -2,3 +2,4 @@ Flask
 Flask-SQLAlchemy
 Flask-Mail
 email-validator
+gunicorn
